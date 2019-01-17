@@ -2,12 +2,11 @@ package service
 
 import (
 	"github.com/spacemeshos/go-spacemesh/p2p/p2pcrypto"
-	"github.com/spacemeshos/go-spacemesh/p2p/node"
 )
 
 // Message is an interface to represent a simple message structure
 type Message interface {
-	Sender() node.Node
+	Sender() p2pcrypto.PublicKey
 	Bytes() []byte
 }
 
@@ -16,8 +15,8 @@ type Service interface {
 	Start() error
 	RegisterProtocol(protocol string) chan Message
 	SendMessage(peerPubkey p2pcrypto.PublicKey, protocol string, payload []byte) error
-	SubscribePeerEvents() (conn chan p2pcrypto.PublicKey, disc chan p2pcrypto.PublicKey)
-	ProcessProtocolMessage(sender node.Node, protocol string, payload Data) error
+	SubscribePeerEvents() (new chan p2pcrypto.PublicKey, del chan p2pcrypto.PublicKey)
+	ProcessProtocolMessage(sender p2pcrypto.PublicKey, protocol string, payload Data) error
 	Broadcast(protocol string, payload []byte) error
 	Shutdown()
 }
