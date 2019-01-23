@@ -20,7 +20,7 @@ type Stringer interface {
 }
 
 type Rolacle interface {
-	Validate(committeeSize int, proof Signature) bool
+	Validate(instanceID []byte, K int, committeeSize int, pubKey Stringer, proof []byte) bool
 }
 
 type hasherU32 struct {
