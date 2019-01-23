@@ -30,7 +30,7 @@ func NewMessageValidation(msg []byte, prot string, isValid bool) *MessageValidat
 type Message interface {
 	Sender() p2pcrypto.PublicKey
 	Bytes() []byte
-	ValidationCompletedChan() chan<- MessageValidation
+	ValidationCompletedChan() chan MessageValidation
 }
 
 // Service is an interface that represents a networking service (ideally p2p) that we can use to send messages or listen to incoming messages
@@ -39,7 +39,7 @@ type Service interface {
 	RegisterProtocol(protocol string) chan Message
 	SendMessage(peerPubkey p2pcrypto.PublicKey, protocol string, payload []byte) error
 	SubscribePeerEvents() (new chan p2pcrypto.PublicKey, del chan p2pcrypto.PublicKey)
-	ProcessProtocolMessage(sender p2pcrypto.PublicKey, protocol string, payload Data, validationCompletedChan chan<- MessageValidation) error
+	ProcessProtocolMessage(sender p2pcrypto.PublicKey, protocol string, payload Data, validationCompletedChan chan MessageValidation) error
 	Broadcast(protocol string, payload []byte) error
 	Shutdown()
 }

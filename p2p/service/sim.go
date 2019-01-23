@@ -114,7 +114,7 @@ func (s *Simulator) updateNode(node p2pcrypto.PublicKey, sender *Node) {
 type simMessage struct {
 	msg                     Data
 	sender                  p2pcrypto.PublicKey
-	validationCompletedChan chan<- MessageValidation
+	validationCompletedChan chan MessageValidation
 }
 
 // Bytes is the message's binary data in byte array format.
@@ -133,7 +133,7 @@ func (sm simMessage) Sender() p2pcrypto.PublicKey {
 }
 
 // ValidationCompletedChan is a channel over which the protocol is expected to update on the message validation
-func (sm simMessage) ValidationCompletedChan() chan<- MessageValidation {
+func (sm simMessage) ValidationCompletedChan() chan MessageValidation {
 	return sm.validationCompletedChan
 }
 
@@ -143,7 +143,7 @@ func (sn *Node) Start() error {
 }
 
 // ProcessProtocolMessage
-func (sn *Node) ProcessProtocolMessage(sender p2pcrypto.PublicKey, protocol string, payload Data, validationCompletedChan chan<- MessageValidation) error {
+func (sn *Node) ProcessProtocolMessage(sender p2pcrypto.PublicKey, protocol string, payload Data, validationCompletedChan chan MessageValidation) error {
 	sn.sim.mutex.RLock()
 	c, ok := sn.sim.protocolHandler[sn.PublicKey().String()][protocol]
 	sn.sim.mutex.RUnlock()
